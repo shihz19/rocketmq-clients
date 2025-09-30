@@ -24,10 +24,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/apache/rocketmq-clients/golang/v5/credentials"
-	v2 "github.com/apache/rocketmq-clients/golang/v5/protocol/v2"
 	gomock "github.com/golang/mock/gomock"
 	"github.com/prashantv/gostub"
+	"github.com/shihz19/rocketmq-clients/golang/credentials"
+	v2 "github.com/shihz19/rocketmq-clients/golang/protocol/v2"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zaptest/observer"
