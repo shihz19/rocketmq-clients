@@ -28,7 +28,7 @@ import (
 
 	"go.uber.org/atomic"
 
-	"github.com/apache/rocketmq-clients/golang/v5/pkg/utils"
+	"github.com/shihz19/rocketmq-clients/golang/pkg/utils"
 )
 
 /*

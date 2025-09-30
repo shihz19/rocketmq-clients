@@ -18,13 +18,15 @@
 package golang
 
 import (
+	"context"
 	"fmt"
+	"net"
 	"sync"
 	"time"
 
 	"go.uber.org/atomic"
 
-	v2 "github.com/apache/rocketmq-clients/golang/v5/protocol/v2"
+	v2 "github.com/shihz19/rocketmq-clients/golang/protocol/v2"
 	"google.golang.org/protobuf/types/known/durationpb"
 )
 
@@ -33,6 +35,7 @@ type producerOptions struct {
 	maxAttempts int32
 	topics      []string
 	checker     *TransactionChecker
+	proxy       Proxy
 }
 
 var defaultProducerOptions = producerOptions{
@@ -84,6 +87,15 @@ func WithTopics(t ...string) ProducerOption {
 func WithTransactionChecker(checker *TransactionChecker) ProducerOption {
 	return newFuncProducerOption(func(o *producerOptions) {
 		o.checker = checker
+	})
+}
+
+func WithProxy(dialer ProxyDialer) ProducerOption {
+	return newFuncProducerOption(func(o *producerOptions) {
+		o.proxy = Proxy{
+			Enable: true,
+			Dialer: dialer,
+		}
 	})
 }
 
@@ -169,3 +181,12 @@ func (ps *producerSettings) applySettingsCommand(settings *v2.Settings) error {
 
 	return nil
 }
+
+type Proxy struct {
+	// Whether to use proxy when connecting to rocketmq proxy (default is false)
+	Enable bool
+	// The proxy dialer to use when Enable is true (default is nil)
+	Dialer ProxyDialer
+}
+
+type ProxyDialer func(context.Context, string) (net.Conn, error)
