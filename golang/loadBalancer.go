@@ -23,9 +23,9 @@ import (
 
 	"go.uber.org/atomic"
 
-	"github.com/apache/rocketmq-clients/golang/v5/pkg/utils"
-	v2 "github.com/apache/rocketmq-clients/golang/v5/protocol/v2"
 	"github.com/dchest/siphash"
+	"github.com/shihz19/rocketmq-clients/golang/pkg/utils"
+	v2 "github.com/shihz19/rocketmq-clients/golang/protocol/v2"
 	// "github.com/dchest/siphash"
 )
 

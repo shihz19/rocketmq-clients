@@ -21,7 +21,7 @@ import "github.com/apache/rocketmq-clients/golang"
 Otherwise, to install the `golang` package, run the following command:
 
 ```sh
-go get -u github.com/apache/rocketmq-clients/golang/v5
+go get -u github.com/shihz19/rocketmq-clients/golang
 ```
 
 [codecov-golang-image]: https://img.shields.io/codecov/c/gh/apache/rocketmq-clients/master?flag=golang&label=Golang%20Coverage&logo=codecov

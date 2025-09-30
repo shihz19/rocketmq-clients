@@ -24,7 +24,7 @@ import (
 	"math"
 	"time"
 
-	"github.com/apache/rocketmq-clients/golang/v5/pkg/zaplog"
+	"github.com/shihz19/rocketmq-clients/golang/pkg/zaplog"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 )
@@ -68,7 +68,7 @@ var defaultConnOptions = connOptions{
 		RootCAs:            x509.NewCertPool(),
 		InsecureSkipVerify: true,
 	},
-	Logger:            zaplog.New(),
+	Logger: zaplog.New(),
 }
 
 // A ConnOption sets options such as tls.Config, etc.
@@ -146,6 +146,7 @@ func WithContext(ctx context.Context) ConnOption {
 }
 
 func WithZapLogger(logger *zap.Logger) ConnOption {
+
 	return newFuncConnOption(func(o *connOptions) {
 		o.Logger = logger
 	})

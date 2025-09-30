@@ -27,11 +27,11 @@ import (
 	"sync"
 	"time"
 
-	innerMD "github.com/apache/rocketmq-clients/golang/v5/metadata"
-	"github.com/apache/rocketmq-clients/golang/v5/pkg/ticker"
-	"github.com/apache/rocketmq-clients/golang/v5/pkg/utils"
-	v2 "github.com/apache/rocketmq-clients/golang/v5/protocol/v2"
 	"github.com/google/uuid"
+	innerMD "github.com/shihz19/rocketmq-clients/golang/metadata"
+	"github.com/shihz19/rocketmq-clients/golang/pkg/ticker"
+	"github.com/shihz19/rocketmq-clients/golang/pkg/utils"
+	v2 "github.com/shihz19/rocketmq-clients/golang/protocol/v2"
 	"go.uber.org/atomic"
 	"go.uber.org/zap"
 	"google.golang.org/grpc/metadata"
@@ -530,6 +530,9 @@ func (cli *defaultClient) telemeter(target string, command *v2.TelemetryCommand)
 func (cli *defaultClient) startUp() error {
 	cli.log.Infof("begin to start the rocketmq client")
 	cm := NewDefaultClientManager()
+	if len(cli.opts.rpcClientOptions) > 0 {
+		cm.opts.SetRpcClientOptions(cli.opts.rpcClientOptions...)
+	}
 	cm.startUp()
 	cm.RegisterClient(cli)
 	cli.clientManager = cm
