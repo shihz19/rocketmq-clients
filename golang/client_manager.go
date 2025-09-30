@@ -23,9 +23,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/apache/rocketmq-clients/golang/v5/pkg/ticker"
-	"github.com/apache/rocketmq-clients/golang/v5/pkg/utils"
-	v2 "github.com/apache/rocketmq-clients/golang/v5/protocol/v2"
+	"github.com/shihz19/rocketmq-clients/golang/pkg/ticker"
+	"github.com/shihz19/rocketmq-clients/golang/pkg/utils"
+	v2 "github.com/shihz19/rocketmq-clients/golang/protocol/v2"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -60,6 +60,11 @@ type clientManagerOptions struct {
 
 	SYNC_SETTINGS_DELAY  time.Duration
 	SYNC_SETTINGS_PERIOD time.Duration
+	RpcClientOptions     []RpcClientOption
+}
+
+func (o *clientManagerOptions) SetRpcClientOptions(opts ...RpcClientOption) {
+	o.RpcClientOptions = append(o.RpcClientOptions, opts...)
 }
 
 var defaultClientManagerOptions = clientManagerOptions{
@@ -210,7 +215,7 @@ func (cm *defaultClientManager) getRpcClient(endpoints *v2.Endpoints) (RpcClient
 			return ret, nil
 		}
 	}
-	rpcClient, err := NewRpcClient(target)
+	rpcClient, err := NewRpcClient(target, cm.opts.RpcClientOptions...)
 	if err != nil {
 		return nil, err
 	}

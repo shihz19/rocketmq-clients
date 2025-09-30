@@ -20,14 +20,15 @@ package golang
 import (
 	"context"
 	"fmt"
+	"google.golang.org/grpc"
 	"math"
 	"sync"
 	"time"
 
 	"go.uber.org/atomic"
 
-	"github.com/apache/rocketmq-clients/golang/v5/pkg/utils"
-	v2 "github.com/apache/rocketmq-clients/golang/v5/protocol/v2"
+	"github.com/shihz19/rocketmq-clients/golang/pkg/utils"
+	v2 "github.com/shihz19/rocketmq-clients/golang/protocol/v2"
 	"google.golang.org/protobuf/types/known/durationpb"
 )
 
@@ -121,7 +122,12 @@ var NewProducer = func(config *Config, opts ...ProducerOption) (Producer, error)
 	for _, opt := range opts {
 		opt.apply(po)
 	}
-	cli, err := po.clientFunc(config)
+	var clientOpts []ClientOption
+	if po.proxy.Enable {
+		clientOpts = append(clientOpts, WithConnOptions(WithDialOptions(grpc.WithContextDialer(po.proxy.Dialer))))
+		clientOpts = append(clientOpts, WithRpcClientOptions(WithRpcClientConnOption(WithDialOptions(grpc.WithContextDialer(po.proxy.Dialer)))))
+	}
+	cli, err := po.clientFunc(config, clientOpts...)
 	if err != nil {
 		return nil, err
 	}
